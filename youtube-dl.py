@@ -10,10 +10,10 @@ import random
 import time
 import argparse
 
-home = os.path.expanduser('~')
-vid_out = os.path.join(home, 'Videos', 'youtube-dl-video')
-aud_out = os.path.join(home, 'Videos', 'youtube-dl-audio')
-input_file = os.path.join(home, 'Documents', 'youtube-dl-inputs.txt')
+home = os.path.expanduser("~")
+vid_out = os.path.join(home, "Videos", "youtube-dl-video")
+aud_out = os.path.join(home, "Videos", "youtube-dl-audio")
+input_file = os.path.join(home, "Documents", "youtube-dl-inputs.txt")
 
 if not os.path.exists(vid_out):
     os.mkdir(vid_out)
@@ -22,9 +22,11 @@ if not os.path.exists(aud_out):
 
 
 def main():
-    parser = argparse.ArgumentParser(description = "Download youtube video / audio by url")
-    parser.add_argument('-u', help='list of urls', nargs='+', default = [])
-    parser.set_defaults(func = app)
+    parser = argparse.ArgumentParser(
+        description="Download youtube video / audio by url"
+    )
+    parser.add_argument("-u", help="list of urls", nargs="+", default=[])
+    parser.set_defaults(func=app)
     args = parser.parse_args()
     args.func(args)
 
@@ -41,8 +43,7 @@ def app(args):
         for char in txt:
             r = random.uniform(n1, n2)
             time.sleep(r)
-            print(char, end='', flush=True)
-
+            print(char, end="", flush=True)
 
     def completed(stream, yt):
         title = f"Title: {str(yt.title)}\n"
@@ -54,29 +55,30 @@ def app(args):
         for item in output:
             typewrite(item)
 
-
-
-    out_format = input('Please select <aud|vid>: ')
+    out_format = input("Please select <aud|vid>: ")
 
     try:
-        if out_format == 'aud':
-            out_path = os.path.join('AUD')
+        if out_format == "aud":
+            out_path = os.path.join("AUD")
             for vid in vid_list:
                 yt = YouTube(vid)
                 strms = yt.streams.filter(only_audio=True)
-                typewrite('Download is starting ...\n')
+                typewrite("Download is starting ...\n")
                 strms[0].download(aud_out)
                 completed(strms[0], yt)
-        elif out_format == 'vid':
-            out_path = os.path.join('VID')
+        elif out_format == "vid":
+            out_path = os.path.join("VID")
             for vid in vid_list:
                 yt = YouTube(vid)
-                strms = yt.streams.filter(progressive=True, file_extension='mp4').get_highest_resolution()
-                typewrite('Download is starting ...\n')
+                strms = yt.streams.filter(
+                    progressive=True, file_extension="mp4"
+                ).get_highest_resolution()
+                typewrite("Download is starting ...\n")
                 strms.download(vid_out)
                 completed(strms, yt)
     except:
-        typewrite('Something went wrong')
+        typewrite("Something went wrong")
+
 
 if __name__ == "__main__":
     main()
