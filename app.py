@@ -24,7 +24,7 @@ if not os.path.exists(aud_out):
 def main():
     parser = argparse.ArgumentParser(description = "Download youtube video / audio by url")
     parser.add_argument('-u', '--urls', help='list of urls', nargs='+', default = [])
-    parser.add_argument('-l', '--local' help='use local txt file at ~/Documents/youtube-dl-inputs.txt')
+    parser.add_argument('-l', '--local' help='txt file at ~/Documents/youtube-dl-inputs.txt')
     parser.set_defaults(func = app)
     args = parser.parse_args()
     args.func(args)
