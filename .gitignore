@@ -1,4 +1,4 @@
-AUD/
-VID/
-
-.null_ls*
+build/
+dist/
+.mypy_cache/
+youtube-dl.spec
