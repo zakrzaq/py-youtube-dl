@@ -23,22 +23,18 @@ if not os.path.exists(aud_out):
 
 def main():
     parser = argparse.ArgumentParser(description = "Download youtube video / audio by url")
-    parser.add_argument('-u', '--urls', help='list of urls', nargs='+', default = [])
-    parser.add_argument('-l', '--local' help='use local txt file at ~/Documents/youtube-dl-inputs.txt')
+    parser.add_argument('-u', help='list of urls', nargs='+', default = [])
     parser.set_defaults(func = app)
     args = parser.parse_args()
     args.func(args)
 
 
 def app(args):
-    if args.ursl:
+    if args:
         vid_list = args.u
-        print(vid_list)
-    elif args.local:
+    else:
         with open(input_file) as f:
-            vid_list =f.readlines()
-        print(vid_list)
-        
+            vid_list = f.readlines()
 
     def typewrite(txt: str, n1: float = 0.05, n2: float = 0.01):
 
@@ -64,6 +60,7 @@ def app(args):
 
     try:
         if out_format == 'aud':
+            out_path = os.path.join('AUD')
             for vid in vid_list:
                 yt = YouTube(vid)
                 strms = yt.streams.filter(only_audio=True)
@@ -71,6 +68,7 @@ def app(args):
                 strms[0].download(aud_out)
                 completed(strms[0], yt)
         elif out_format == 'vid':
+            out_path = os.path.join('VID')
             for vid in vid_list:
                 yt = YouTube(vid)
                 strms = yt.streams.filter(progressive=True, file_extension='mp4').get_highest_resolution()
