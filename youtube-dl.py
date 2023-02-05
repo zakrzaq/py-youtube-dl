@@ -55,7 +55,7 @@ def app():
             for vid in vid_list:
                 yt = YouTube(vid)
                 strms = yt.streams.filter(only_audio=True)
-                typewrite("\nDownload is starting ...")
+                typewrite("\nDownload is starting ...\n")
                 strms[0].download(aud_out)
                 completed(strms[0], yt)
         elif out_format == "vid":
