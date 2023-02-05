@@ -2,3 +2,5 @@ build/
 dist/
 .mypy_cache/
 youtube-dl.spec
+.null-ls*
+.env

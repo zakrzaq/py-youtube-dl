@@ -6,6 +6,7 @@
 
 from pytube import YouTube
 import os
+import sys
 import random
 import time
 import argparse
@@ -20,41 +21,32 @@ if not os.path.exists(vid_out):
 if not os.path.exists(aud_out):
     os.mkdir(aud_out)
 
+def typewrite(txt: str, n1: float = 0.05, n2: float = 0.01):
+    for char in txt:
+        r = random.uniform(n1, n2)
+        time.sleep(r)
+        print(char, end="", flush=True)
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Download youtube video / audio by url"
-    )
-    parser.add_argument("-u", help="list of urls", nargs="+", default=[])
-    parser.set_defaults(func=app)
-    args = parser.parse_args()
-    args.func(args)
+def completed(stream, yt):
+    title = f"Title: {str(yt.title)}\n"
+    length = f"Length: {str(yt.length)} seconds\n"
+    size = f"File size: {str(stream.filesize_mb)} Mb\n"
+
+    output = [title, length, size]
+
+    for item in output:
+        typewrite(item)
 
 
-def app(args):
-    if args:
-        vid_list = args.u
+def app():
+    if sys.argv:
+        vid_list = sys.argv
+        vid_list.pop(0)
     else:
         with open(input_file) as f:
             vid_list = f.readlines()
-
-    def typewrite(txt: str, n1: float = 0.05, n2: float = 0.01):
-
-        for char in txt:
-            r = random.uniform(n1, n2)
-            time.sleep(r)
-            print(char, end="", flush=True)
-
-    def completed(stream, yt):
-        title = f"Title: {str(yt.title)}\n"
-        length = f"Length: {str(yt.length)} seconds\n"
-        size = f"File size: {str(stream.filesize_mb)} Mb\n"
-
-        output = [title, length, size]
-
-        for item in output:
-            typewrite(item)
-
+    
+    print(vid_list)
     out_format = input("Please select <aud|vid>: ")
 
     try:
@@ -63,7 +55,7 @@ def app(args):
             for vid in vid_list:
                 yt = YouTube(vid)
                 strms = yt.streams.filter(only_audio=True)
-                typewrite("Download is starting ...\n")
+                typewrite("\nDownload is starting ...")
                 strms[0].download(aud_out)
                 completed(strms[0], yt)
         elif out_format == "vid":
@@ -81,4 +73,4 @@ def app(args):
 
 
 if __name__ == "__main__":
-    main()
+    app()
