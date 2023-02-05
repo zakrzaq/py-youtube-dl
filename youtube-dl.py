@@ -9,7 +9,7 @@ import os
 import sys
 import random
 import time
-import argparse
+from pathlib import Path
 
 home = os.path.expanduser("~")
 vid_out = os.path.join(home, "Videos", "youtube-dl-video")
@@ -20,6 +20,8 @@ if not os.path.exists(vid_out):
     os.mkdir(vid_out)
 if not os.path.exists(aud_out):
     os.mkdir(aud_out)
+if not os.path.exists(input_file):
+    Path(input_file).touch()
 
 def typewrite(txt: str, n1: float = 0.05, n2: float = 0.01):
     for char in txt:
@@ -39,14 +41,13 @@ def completed(stream, yt):
 
 
 def app():
-    if sys.argv:
+    if len(sys.argv) > 1:
         vid_list = sys.argv
         vid_list.pop(0)
     else:
         with open(input_file) as f:
             vid_list = f.readlines()
     
-    print(vid_list)
     out_format = input("Please select <aud|vid>: ")
 
     try:
